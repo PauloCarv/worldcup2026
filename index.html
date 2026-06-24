@@ -411,8 +411,8 @@ class Component extends DCLogic {
     const letters = Object.keys(WC.groups);
 
     // stats
-    let goals=0, playedM=0;
-    letters.forEach(L => WC.groups[L].matches.forEach(m => { if(m[2]!==null){ goals+=m[2]+m[3]; playedM++; }}));
+    let goals=0, playedM=0, maxDayPlayed=0;
+    letters.forEach(L => WC.groups[L].matches.forEach(m => { if(m[2]!==null){ goals+=m[2]+m[3]; playedM++; if(m[4]>maxDayPlayed) maxDayPlayed=m[4]; }}));
 
     // group cards
     const dotFor = (pos)=> pos<=2 ? "#16E0B4" : pos===3 ? "#FFC93C" : "#2A3556";
@@ -522,7 +522,7 @@ class Component extends DCLogic {
     const hMexObj = ()=>{ const o=this.matchObj(find("A",0),"Group A · Matchday 1 · Opening match"); o.note="Julián Quiñones scored the first goal of the 2026 World Cup at Estadio Azteca — the first CONCACAF player to open a World Cup."; this.setState({sel:o}); };
 
     return {
-      daysPlayed:"2", goalsCount:goals,
+      daysPlayed:String(maxDayPlayed), goalsCount:goals,
       tabGroups:T==="groups", tabKO:T==="ko", tabResults:T==="results",
       tabGroupsStyle:T==="groups"?tabOn:tabOff,
       tabKOStyle:T==="ko"?tabOn:tabOff,
