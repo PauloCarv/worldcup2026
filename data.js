@@ -117,7 +117,7 @@ window.WC = (function () {
       ["POR","COD",1,1,1,"Jun 17","18:00","New York/NJ"],
       ["UZB","COL",1,2,1,"Jun 17","15:00","Toronto"],
       ["POR","UZB",3,0,2,"Jun 23","18:00","New York/NJ"],
-      ["COL","COD",1,1,2,"Jun 23","15:00","Toronto"],
+      ["COL","COD",1,0,2,"Jun 23","15:00","Toronto"],
       ["COL","POR",null,null,3,"Jun 27","16:00","New York/NJ"],
       ["COD","UZB",null,null,3,"Jun 27","16:00","Toronto"],
     ]},
