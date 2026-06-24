@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="data.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0B0F1E;color:#EAF0FF;font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::-webkit-scrollbar{height:10px;width:10px}
+  ::-webkit-scrollbar-thumb{background:#2A3556;border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  @keyframes wcfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes wcpop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:radial-gradient(1200px 600px at 80% -10%, rgba(255,45,85,.16), transparent 60%), radial-gradient(900px 500px at 0% 0%, rgba(61,123,255,.12), transparent 55%), #0B0F1E;">
+
+  <header style="max-width:1240px;margin:0 auto;padding:34px 24px 0;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.22em;color:#8B95B8;text-transform:uppercase;">
+          <span style="display:inline-flex;gap:4px;font-size:16px;">🇨🇦 🇲🇽 🇺🇸</span>
+          <span>Canada · Mexico · USA</span>
+        </div>
+        <h1 style="font-family:'Anton',sans-serif;font-size:clamp(38px,7vw,76px);line-height:.92;letter-spacing:.01em;margin-top:10px;text-transform:uppercase;">
+          <span style="color:#EAF0FF;">FIFA World Cup</span>
+          <span style="color:#FF2D55;"> 26</span>
+        </h1>
+        <p style="color:#8B95B8;font-weight:600;margin-top:8px;font-size:15px;">June 11 – July 19, 2026 · 48 teams · 104 matches · Live tracker</p>
+      </div>
+      <div style="display:flex;gap:18px;">
+        <div style="text-align:right;">
+          <div style="font-family:'Anton',sans-serif;font-size:30px;color:#16E0B4;line-height:1;">{{ daysPlayed }}</div>
+          <div style="font-size:11px;color:#8B95B8;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-top:4px;">Matchdays<br>played</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Anton',sans-serif;font-size:30px;color:#FFC93C;line-height:1;">{{ goalsCount }}</div>
+          <div style="font-size:11px;color:#8B95B8;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-top:4px;">Goals<br>scored</div>
+        </div>
+      </div>
+    </div>
+
+    <nav style="display:flex;gap:6px;margin-top:26px;border-bottom:1px solid rgba(255,255,255,.08);">
+      <button onClick="{{ goGroups }}" style="{{ tabGroupsStyle }}">Group Stage</button>
+      <button onClick="{{ goKO }}" style="{{ tabKOStyle }}">Knockout Bracket</button>
+      <button onClick="{{ goResults }}" style="{{ tabResultsStyle }}">Results &amp; Highlights</button>
+    </nav>
+  </header>
+
+  <main style="max-width:1240px;margin:0 auto;padding:28px 24px 80px;">
+
+    <!-- GROUP STAGE -->
+    <sc-if value="{{ tabGroups }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;animation:wcfade .4s ease;">
+        <sc-for list="{{ groupCards }}" as="g" hint-placeholder-count="12">
+          <section style="background:linear-gradient(180deg,#141B30,#111729);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+              <span style="font-family:'Anton',sans-serif;font-size:22px;background:#FF2D55;color:#fff;width:36px;height:36px;display:grid;place-items:center;border-radius:9px;">{{ g.letter }}</span>
+              <span style="font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:13px;color:#8B95B8;">Group {{ g.letter }}</span>
+            </div>
+            <div style="padding:6px 8px 10px;">
+              <div style="display:grid;grid-template-columns:18px 1fr 26px 26px 34px 30px;gap:0;padding:6px 8px;font-size:10px;font-weight:800;letter-spacing:.08em;color:#677099;text-transform:uppercase;">
+                <span></span><span></span><span style="text-align:center;">P</span><span style="text-align:center;">GD</span><span style="text-align:center;">Pts</span><span></span>
+
+              </div>
+              <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="4">
+                <div onClick="{{ r.openTeam }}" style="{{ r.rowStyle }}">
+                  <span style="font-family:'Anton',sans-serif;font-size:14px;color:#677099;text-align:center;">{{ r.pos }}</span>
+                  <span style="display:flex;align-items:center;gap:8px;overflow:hidden;">
+                    <span style="font-size:17px;">{{ r.flag }}</span>
+                    <span style="font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</span>
+                  </span>
+                  <span style="text-align:center;font-size:12.5px;color:#8B95B8;">{{ r.P }}</span>
+                  <span style="text-align:center;font-size:12.5px;color:#8B95B8;">{{ r.GDtext }}</span>
+                  <span style="text-align:center;font-family:'Anton',sans-serif;font-size:15px;color:#EAF0FF;">{{ r.Pts }}</span>
+                  <span style="width:8px;height:8px;border-radius:50%;justify-self:center;align-self:center;background:{{ r.dot }};"></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.07);padding:8px;">
+              <sc-for list="{{ g.matches }}" as="m" hint-placeholder-count="6">
+                <button onClick="{{ m.open }}" style="{{ m.style }}">
+                  <span style="font-size:10px;font-weight:700;color:#677099;width:42px;text-align:left;flex:none;">{{ m.dateShort }}</span>
+                  <span style="flex:1;display:flex;align-items:center;gap:6px;justify-content:flex-end;min-width:0;">
+                    <span style="font-weight:600;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.homeName }}</span>
+                    <span style="font-size:14px;flex:none;">{{ m.homeFlag }}</span>
+                  </span>
+                  <span style="{{ m.scoreStyle }}">{{ m.scoreText }}</span>
+                  <span style="flex:1;display:flex;align-items:center;gap:6px;min-width:0;">
+                    <span style="font-size:14px;flex:none;">{{ m.awayFlag }}</span>
+                    <span style="font-weight:600;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.awayName }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+        </sc-for>
+      </div>
+      <div style="margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#8B95B8;font-weight:600;">
+        <span style="display:flex;align-items:center;gap:7px;"><span style="width:9px;height:9px;border-radius:50%;background:#16E0B4;"></span>Qualifies (top 2)</span>
+        <span style="display:flex;align-items:center;gap:7px;"><span style="width:9px;height:9px;border-radius:50%;background:#FFC93C;"></span>3rd — possible via best-eight</span>
+        <span style="display:flex;align-items:center;gap:7px;"><span style="width:9px;height:9px;border-radius:50%;background:#2A3556;"></span>Eliminated zone</span>
+      </div>
+    </sc-if>
+
+    <!-- KNOCKOUT BRACKET -->
+    <sc-if value="{{ tabKO }}" hint-placeholder-val="{{ true }}">
+      <div style="animation:wcfade .4s ease;">
+        <div style="display:flex;align-items:center;gap:12px;background:rgba(255,201,60,.08);border:1px solid rgba(255,201,60,.25);color:#FFC93C;padding:11px 16px;border-radius:12px;font-size:13px;font-weight:600;margin-bottom:22px;">
+          <span style="font-size:16px;">⚑</span>
+          <span>Group stage still in progress — matchups and advancement below are <b>projections</b>. Round of 32 kicks off June 28.</span>
+        </div>
+        <div style="overflow-x:auto;padding-bottom:14px;">
+          <div style="min-width:1180px;">
+            <div style="display:flex;gap:14px;padding:0 2px 10px;">
+              <div style="flex:1;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#677099;">Round of 32</div>
+              <div style="flex:1;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#677099;">Round of 16</div>
+              <div style="flex:1;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#677099;">Quarter-finals</div>
+              <div style="flex:1;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#677099;">Semi-finals</div>
+              <div style="flex:1;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#FFC93C;">Final</div>
+            </div>
+            <div style="display:flex;gap:14px;height:1180px;">
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:space-around;">
+                <sc-for list="{{ koR32 }}" as="m" hint-placeholder-count="16">
+                  <button onClick="{{ m.open }}" style="{{ m.cardStyle }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 9px 3px;">
+                      <span style="font-size:9px;font-weight:800;letter-spacing:.08em;color:#566089;">{{ m.id }}</span>
+                      <span style="font-size:9px;font-weight:700;color:#566089;">{{ m.note }}</span>
+                    </div>
+                    <div style="{{ m.rowAStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.aFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.aName }}</span>
+                      <span style="{{ m.pillAStyle }}">{{ m.aMark }}</span>
+                    </div>
+                    <div style="{{ m.rowBStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.bFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.bName }}</span>
+                      <span style="{{ m.pillBStyle }}">{{ m.bMark }}</span>
+                    </div>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:space-around;">
+                <sc-for list="{{ koR16 }}" as="m" hint-placeholder-count="8">
+                  <button onClick="{{ m.open }}" style="{{ m.cardStyle }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 9px 3px;">
+                      <span style="font-size:9px;font-weight:800;letter-spacing:.08em;color:#566089;">{{ m.id }}</span>
+                      <span style="font-size:9px;font-weight:700;color:#566089;">{{ m.note }}</span>
+                    </div>
+                    <div style="{{ m.rowAStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.aFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.aName }}</span>
+                      <span style="{{ m.pillAStyle }}">{{ m.aMark }}</span>
+                    </div>
+                    <div style="{{ m.rowBStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.bFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.bName }}</span>
+                      <span style="{{ m.pillBStyle }}">{{ m.bMark }}</span>
+                    </div>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:space-around;">
+                <sc-for list="{{ koQF }}" as="m" hint-placeholder-count="4">
+                  <button onClick="{{ m.open }}" style="{{ m.cardStyle }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 9px 3px;">
+                      <span style="font-size:9px;font-weight:800;letter-spacing:.08em;color:#566089;">{{ m.id }}</span>
+                      <span style="font-size:9px;font-weight:700;color:#566089;">{{ m.note }}</span>
+                    </div>
+                    <div style="{{ m.rowAStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.aFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.aName }}</span>
+                      <span style="{{ m.pillAStyle }}">{{ m.aMark }}</span>
+                    </div>
+                    <div style="{{ m.rowBStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.bFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.bName }}</span>
+                      <span style="{{ m.pillBStyle }}">{{ m.bMark }}</span>
+                    </div>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:space-around;">
+                <sc-for list="{{ koSF }}" as="m" hint-placeholder-count="2">
+                  <button onClick="{{ m.open }}" style="{{ m.cardStyle }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 9px 3px;">
+                      <span style="font-size:9px;font-weight:800;letter-spacing:.08em;color:#566089;">{{ m.id }}</span>
+                      <span style="font-size:9px;font-weight:700;color:#566089;">{{ m.note }}</span>
+                    </div>
+                    <div style="{{ m.rowAStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.aFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.aName }}</span>
+                      <span style="{{ m.pillAStyle }}">{{ m.aMark }}</span>
+                    </div>
+                    <div style="{{ m.rowBStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ m.bFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ m.bName }}</span>
+                      <span style="{{ m.pillBStyle }}">{{ m.bMark }}</span>
+                    </div>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:34px;">
+                <div>
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#FFC93C;margin-bottom:6px;display:flex;align-items:center;gap:6px;">🏆 Final · {{ koFinal.date }}</div>
+                  <button onClick="{{ koFinal.open }}" style="{{ koFinal.cardStyle }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 9px 3px;">
+                      <span style="font-size:9px;font-weight:800;letter-spacing:.08em;color:#566089;">{{ koFinal.id }}</span>
+                      <span style="font-size:9px;font-weight:700;color:#566089;">{{ koFinal.note }}</span>
+                    </div>
+                    <div style="{{ koFinal.rowAStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ koFinal.aFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ koFinal.aName }}</span>
+                      <span style="{{ koFinal.pillAStyle }}">{{ koFinal.aMark }}</span>
+                    </div>
+                    <div style="{{ koFinal.rowBStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ koFinal.bFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ koFinal.bName }}</span>
+                      <span style="{{ koFinal.pillBStyle }}">{{ koFinal.bMark }}</span>
+                    </div>
+                  </button>
+                </div>
+                <div>
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#677099;margin-bottom:6px;">3rd place · {{ koThird.date }}</div>
+                  <button onClick="{{ koThird.open }}" style="{{ koThird.cardStyle }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 9px 3px;">
+                      <span style="font-size:9px;font-weight:800;letter-spacing:.08em;color:#566089;">{{ koThird.id }}</span>
+                      <span style="font-size:9px;font-weight:700;color:#566089;">{{ koThird.note }}</span>
+                    </div>
+                    <div style="{{ koThird.rowAStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ koThird.aFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ koThird.aName }}</span>
+                      <span style="{{ koThird.pillAStyle }}">{{ koThird.aMark }}</span>
+                    </div>
+                    <div style="{{ koThird.rowBStyle }}">
+                      <span style="font-size:15px;flex:none;">{{ koThird.bFlag }}</span>
+                      <span style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;">{{ koThird.bName }}</span>
+                      <span style="{{ koThird.pillBStyle }}">{{ koThird.bMark }}</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- RESULTS & HIGHLIGHTS -->
+    <sc-if value="{{ tabResults }}" hint-placeholder-val="{{ true }}">
+      <div style="animation:wcfade .4s ease;">
+        <h2 style="font-family:'Anton',sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:.02em;margin-bottom:14px;">Highlights so far</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:38px;">
+          <button onClick="{{ hMessi }}" style="text-align:left;cursor:pointer;border:1px solid rgba(255,45,85,.3);background:linear-gradient(180deg,rgba(255,45,85,.14),rgba(255,45,85,.04));border-radius:14px;padding:16px;color:#EAF0FF;font-family:inherit;">
+            <div style="font-size:22px;">🐐</div>
+            <div style="font-family:'Anton',sans-serif;font-size:18px;margin-top:8px;text-transform:uppercase;">Messi makes history</div>
+            <div style="font-size:13px;color:#B7C0DE;margin-top:6px;line-height:1.45;">A brace vs Austria takes Messi to 18 career World Cup goals — past Klose's record of 16.</div>
+            <div style="font-size:11px;color:#FF6F8B;font-weight:800;margin-top:10px;letter-spacing:.06em;">ARG 2–0 AUT · View match →</div>
+          </button>
+          <button onClick="{{ hGer }}" style="text-align:left;cursor:pointer;border:1px solid rgba(61,123,255,.3);background:linear-gradient(180deg,rgba(61,123,255,.14),rgba(61,123,255,.04));border-radius:14px;padding:16px;color:#EAF0FF;font-family:inherit;">
+            <div style="font-size:22px;">🎯</div>
+            <div style="font-family:'Anton',sans-serif;font-size:18px;margin-top:8px;text-transform:uppercase;">Goal avalanche</div>
+            <div style="font-size:13px;color:#B7C0DE;margin-top:6px;line-height:1.45;">Germany open with a statement, hammering debutants Curaçao 7–1 in Philadelphia.</div>
+            <div style="font-size:11px;color:#7FA4FF;font-weight:800;margin-top:10px;letter-spacing:.06em;">GER 7–1 CUW · View match →</div>
+          </button>
+          <button onClick="{{ hCan }}" style="text-align:left;cursor:pointer;border:1px solid rgba(22,224,180,.3);background:linear-gradient(180deg,rgba(22,224,180,.14),rgba(22,224,180,.04));border-radius:14px;padding:16px;color:#EAF0FF;font-family:inherit;">
+            <div style="font-size:22px;">🍁</div>
+            <div style="font-family:'Anton',sans-serif;font-size:18px;margin-top:8px;text-transform:uppercase;">Co-hosts roar</div>
+            <div style="font-size:13px;color:#B7C0DE;margin-top:6px;line-height:1.45;">Canada crush Qatar 6–0 in Toronto to seize control of Group B.</div>
+            <div style="font-size:11px;color:#5BE7C6;font-weight:800;margin-top:10px;letter-spacing:.06em;">CAN 6–0 QAT · View match →</div>
+          </button>
+          <button onClick="{{ hMex }}" style="text-align:left;cursor:pointer;border:1px solid rgba(255,201,60,.3);background:linear-gradient(180deg,rgba(255,201,60,.14),rgba(255,201,60,.04));border-radius:14px;padding:16px;color:#EAF0FF;font-family:inherit;">
+            <div style="font-size:22px;">🎉</div>
+            <div style="font-family:'Anton',sans-serif;font-size:18px;margin-top:8px;text-transform:uppercase;">Opening night</div>
+            <div style="font-size:13px;color:#B7C0DE;margin-top:6px;line-height:1.45;">Quiñones nets the tournament's first goal as Mexico beat South Africa at the Azteca.</div>
+            <div style="font-size:11px;color:#FFD679;font-weight:800;margin-top:10px;letter-spacing:.06em;">MEX 2–0 RSA · View match →</div>
+          </button>
+        </div>
+
+        <h2 style="font-family:'Anton',sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:.02em;margin-bottom:14px;">All results &amp; fixtures</h2>
+        <sc-for list="{{ resultDays }}" as="d" hint-placeholder-count="8">
+          <div style="margin-bottom:22px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <span style="font-family:'Anton',sans-serif;font-size:16px;color:#FF2D55;text-transform:uppercase;">{{ d.date }}</span>
+              <span style="height:1px;flex:1;background:rgba(255,255,255,.08);"></span>
+              <span style="font-size:11px;color:#677099;font-weight:700;">{{ d.label }}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;">
+              <sc-for list="{{ d.matches }}" as="m" hint-placeholder-count="4">
+                <button onClick="{{ m.open }}" style="{{ m.rowStyle }}">
+                  <span style="background:#1B2440;color:#8B95B8;font-size:10px;font-weight:800;padding:3px 7px;border-radius:6px;flex:none;">{{ m.tag }}</span>
+                  <span style="flex:1;display:flex;align-items:center;gap:7px;justify-content:flex-end;min-width:0;">
+                    <span style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.homeName }}</span>
+                    <span style="font-size:16px;flex:none;">{{ m.homeFlag }}</span>
+                  </span>
+                  <span style="{{ m.scoreStyle }}">{{ m.scoreText }}</span>
+                  <span style="flex:1;display:flex;align-items:center;gap:7px;min-width:0;">
+                    <span style="font-size:16px;flex:none;">{{ m.awayFlag }}</span>
+                    <span style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.awayName }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+  </main>
+
+  <!-- MATCH DETAIL MODAL -->
+  <sc-if value="{{ selOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(6,9,18,.78);backdrop-filter:blur(6px);display:grid;place-items:center;padding:20px;z-index:50;animation:wcfade .2s ease;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:460px;background:linear-gradient(180deg,#161E33,#10162a);border:1px solid rgba(255,255,255,.1);border-radius:20px;overflow:hidden;animation:wcpop .25s cubic-bezier(.2,.8,.2,1);box-shadow:0 30px 80px rgba(0,0,0,.5);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);">
+          <span style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#FF2D55;">{{ sel.stage }}</span>
+          <button onClick="{{ closeModal }}" style="background:rgba(255,255,255,.06);border:none;color:#EAF0FF;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px;">✕</button>
+        </div>
+        <div style="padding:26px 22px;">
+          <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;">
+            <div style="text-align:center;">
+              <div style="font-size:48px;line-height:1;">{{ sel.homeFlag }}</div>
+              <div style="font-weight:800;margin-top:10px;font-size:15px;">{{ sel.homeName }}</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-family:'Anton',sans-serif;font-size:44px;line-height:1;color:{{ sel.scoreColor }};">{{ sel.bigScore }}</div>
+              <div style="font-size:11px;color:#8B95B8;font-weight:700;margin-top:6px;">{{ sel.statusText }}</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:48px;line-height:1;">{{ sel.awayFlag }}</div>
+              <div style="font-weight:800;margin-top:10px;font-size:15px;">{{ sel.awayName }}</div>
+            </div>
+          </div>
+          <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:10px;">
+              <span style="color:#8B95B8;font-weight:600;">Date</span><span style="font-weight:700;">{{ sel.dateFull }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:10px;">
+              <span style="color:#8B95B8;font-weight:600;">Kick-off</span><span style="font-weight:700;">{{ sel.time }}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;padding:10px 14px;background:rgba(255,255,255,.03);border-radius:10px;">
+              <span style="color:#8B95B8;font-weight:600;">Venue</span><span style="font-weight:700;">{{ sel.venue }}</span>
+            </div>
+          </div>
+          <sc-if value="{{ sel.hasNote }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px;font-size:13px;line-height:1.5;color:#B7C0DE;background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.2);border-radius:10px;padding:12px 14px;">{{ sel.note }}</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: "groups", sel: null };
+
+  team(code){ const t = window.WC.T[code]; return { flag: t.flag, name: t.name }; }
+
+  computeGroup(letter){
+    const g = window.WC.groups[letter];
+    const tbl = {};
+    g.teams.forEach(c => tbl[c] = { c, P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,Pts:0 });
+    g.matches.forEach(m => {
+      const [h,a,hs,as] = m;
+      if (hs===null) return;
+      const H=tbl[h], A=tbl[a];
+      H.P++; A.P++; H.GF+=hs; H.GA+=as; A.GF+=as; A.GA+=hs;
+      if (hs>as){H.W++;A.L++;H.Pts+=3;}
+      else if (hs<as){A.W++;H.L++;A.Pts+=3;}
+      else {H.D++;A.D++;H.Pts++;A.Pts++;}
+    });
+    Object.values(tbl).forEach(t => t.GD = t.GF - t.GA);
+    return Object.values(tbl).sort((x,y)=> y.Pts-x.Pts || y.GD-x.GD || y.GF-x.GF);
+  }
+
+  // build a normalized match object for the modal
+  matchObj(m, stage){
+    const [h,a,hs,as,day,date,time,venue,note] = m;
+    const H=this.team(h), A=this.team(a);
+    const played = hs!==null && hs!==undefined;
+    return {
+      homeFlag:H.flag, homeName:H.name, awayFlag:A.flag, awayName:A.name,
+      hs, as, played, stage,
+      bigScore: played ? hs+" – "+as : "vs",
+      scoreColor: played ? "#EAF0FF" : "#677099",
+      statusText: played ? "Full time" : "Upcoming · "+date,
+      dateFull: date+", 2026", time: time||"TBD", venue: venue||"TBD",
+      hasNote: !!note, note: note||""
+    };
+  }
+
+  open(m, stage){ return () => this.setState({ sel: this.matchObj(m, stage) }); }
+
+  renderVals(){
+    const WC = window.WC, T = this.state.tab;
+    const tabBase = "padding:13px 18px;background:none;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:14px;letter-spacing:.01em;border-bottom:3px solid transparent;margin-bottom:-1px;";
+    const tabOn = tabBase+"color:#EAF0FF;border-bottom-color:#FF2D55;";
+    const tabOff = tabBase+"color:#677099;";
+
+    const letters = Object.keys(WC.groups);
+
+    // stats
+    let goals=0, playedM=0;
+    letters.forEach(L => WC.groups[L].matches.forEach(m => { if(m[2]!==null){ goals+=m[2]+m[3]; playedM++; }}));
+
+    // group cards
+    const dotFor = (pos)=> pos<=2 ? "#16E0B4" : pos===3 ? "#FFC93C" : "#2A3556";
+    const groupCards = letters.map(L => {
+      const sorted = this.computeGroup(L);
+      const rows = sorted.map((t,i)=>{
+        const pos=i+1, info=this.team(t.c);
+        const bg = pos<=2 ? "rgba(22,224,180,.07)" : pos===3 ? "rgba(255,201,60,.06)" : "transparent";
+        return {
+          pos, flag:info.flag, name:info.name,
+          P:t.P, GDtext:(t.GD>0?"+":"")+t.GD, Pts:t.Pts, dot:dotFor(pos),
+          rowStyle:"display:grid;grid-template-columns:18px 1fr 26px 26px 34px 30px;align-items:center;gap:0;padding:7px 8px;border-radius:8px;background:"+bg+";"
+        };
+      });
+      const matches = WC.groups[L].matches.map(m=>{
+        const [h,a,hs,as,day,date]=m; const H=this.team(h),A=this.team(a);
+        const played=hs!==null;
+        const sc = played
+          ? "font-family:'Anton',sans-serif;font-size:15px;min-width:46px;text-align:center;color:#EAF0FF;flex:none;"
+          : "font-size:11px;font-weight:800;min-width:46px;text-align:center;color:#677099;flex:none;letter-spacing:.05em;";
+        return {
+          homeFlag:H.flag, homeName:H.name, awayFlag:A.flag, awayName:A.name,
+          scoreText: played ? hs+"-"+as : date.replace("Jun ","6/"),
+          dateShort: "MD"+day,
+          scoreStyle: sc,
+          style:"width:100%;display:flex;align-items:center;gap:8px;padding:8px 6px;background:none;border:none;border-radius:8px;cursor:pointer;color:#EAF0FF;font-family:inherit;",
+          open: this.open(m, "Group "+L+" · Matchday "+day)
+        };
+      });
+      return { letter:L, rows, matches };
+    });
+
+    // knockout
+    // Determine projected winners by following the chain forward.
+    // Build a set of advancing team codes per round from the next round's a/b.
+    const ko = WC.ko;
+    const advancers = new Set();
+    [...ko.r16, ...ko.qf, ...ko.sf, ko.final].forEach(m=>{ advancers.add(m.a); advancers.add(m.b); });
+    // champion
+    const champ = ko.final.a; // projected
+    const rowStyle = (win) => "display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:7px;"+(win?"background:rgba(22,224,180,.12);":"opacity:.5;");
+    const pillStyle = (win) => win
+      ? "font-size:9px;font-weight:800;color:#16E0B4;flex:none;"
+      : "font-size:9px;font-weight:800;color:#566089;flex:none;";
+    const cardStyle = "width:100%;text-align:left;background:linear-gradient(180deg,#141B30,#111729);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:7px 0;cursor:pointer;color:#EAF0FF;font-family:inherit;";
+    const buildNode = (m, roundLabel, nextSet, isFinal) => {
+      const A=this.team(m.a), B=this.team(m.b);
+      const aWin = isFinal ? (m.a===champ) : nextSet.has(m.a);
+      const bWin = isFinal ? (m.b===champ) : nextSet.has(m.b);
+      return {
+        id:m.id, date:m.date, note:m.note||"",
+        aFlag:A.flag, aName:A.name, bFlag:B.flag, bName:B.name,
+        aWin, bWin,
+        open: this.open([m.a,m.b,null,null,null,m.date,null,m.venue, "Projected "+roundLabel+" matchup. Final pairing confirmed after the group stage."], roundLabel),
+        cardStyle, rowAStyle: rowStyle(aWin), rowBStyle: rowStyle(bWin),
+        pillAStyle: pillStyle(aWin), pillBStyle: pillStyle(bWin),
+        aMark: aWin?"▶":"", bMark: bWin?"▶":""
+      };
+    };
+    const r16set = new Set(); ko.r16.forEach(m=>{r16set.add(m.a);r16set.add(m.b);});
+    const qfset = new Set(); ko.qf.forEach(m=>{qfset.add(m.a);qfset.add(m.b);});
+    const sfset = new Set(); ko.sf.forEach(m=>{sfset.add(m.a);sfset.add(m.b);});
+    const finalset = new Set([ko.final.a, ko.final.b]);
+
+    const koR32 = ko.r32.map(m=>buildNode(m,"Round of 32",r16set,false));
+    const koR16 = ko.r16.map(m=>buildNode(m,"Round of 16",qfset,false));
+    const koQF  = ko.qf.map(m=>buildNode(m,"Quarter-final",sfset,false));
+    const koSF  = ko.sf.map(m=>buildNode(m,"Semi-final",finalset,false));
+    const koFinal = buildNode(ko.final,"Final",new Set([champ]),true);
+    const thirdNode = (()=>{ const m=ko.third; const A=this.team(m.a),B=this.team(m.b);
+      return { id:m.id,date:m.date,note:"3rd place play-off",aFlag:A.flag,aName:A.name,bFlag:B.flag,bName:B.name,aWin:false,bWin:false,
+        open:this.open([m.a,m.b,null,null,null,m.date,null,m.venue,"Projected third-place play-off."],"3rd place play-off"),
+        cardStyle, rowAStyle: rowStyle(false), rowBStyle: rowStyle(false),
+        pillAStyle: pillStyle(false), pillBStyle: pillStyle(false), aMark:"", bMark:""
+      };
+    })();
+
+    // results timeline
+    const all = [];
+    letters.forEach(L => WC.groups[L].matches.forEach(m=>{
+      if(m[2]!==null) all.push({m, L, day:m[4], date:m[5]});
+    }));
+    const order = ["Jun 11","Jun 12","Jun 13","Jun 14","Jun 15","Jun 16","Jun 17","Jun 18","Jun 19","Jun 20","Jun 21","Jun 22","Jun 23"];
+    const byDate = {};
+    all.forEach(x=>{ (byDate[x.date]=byDate[x.date]||[]).push(x); });
+    const resultDays = order.filter(d=>byDate[d]).map(d=>{
+      const items = byDate[d].map(x=>{
+        const m=x.m; const [h,a,hs,as]=m; const H=this.team(h),A=this.team(a);
+        return {
+          tag:"GRP "+x.L,
+          homeFlag:H.flag, homeName:H.name, awayFlag:A.flag, awayName:A.name,
+          scoreText: hs+" – "+as,
+          scoreStyle:"font-family:'Anton',sans-serif;font-size:18px;min-width:60px;text-align:center;color:#EAF0FF;flex:none;",
+          rowStyle:"width:100%;display:flex;align-items:center;gap:9px;padding:11px 12px;background:linear-gradient(180deg,#141B30,#111729);border:1px solid rgba(255,255,255,.07);border-radius:11px;cursor:pointer;color:#EAF0FF;font-family:inherit;",
+          open:this.open(m,"Group "+x.L+" · Matchday "+x.day)
+        };
+      });
+      return { date:d, label:items.length+" matches", matches:items };
+    });
+
+    // highlight handlers
+    const find = (L, idx) => WC.groups[L].matches[idx];
+    const hMessi = this.open(find("J",2), "Group J · Matchday 2");
+    const hMessiObj = ()=>{ const o=this.matchObj(find("J",2),"Group J · Matchday 2"); o.note="Lionel Messi scored both goals to reach 18 career World Cup goals, overtaking Miroslav Klose (16) as the tournament's all-time leading scorer."; this.setState({sel:o}); };
+    const hGerObj = ()=>{ const o=this.matchObj(find("E",0),"Group E · Matchday 1"); o.note="Germany's emphatic opener over debutants Curaçao set the early goal-difference pace in Group E."; this.setState({sel:o}); };
+    const hCanObj = ()=>{ const o=this.matchObj(find("B",2),"Group B · Matchday 2"); o.note="Co-hosts Canada produced their biggest World Cup win to take command of Group B."; this.setState({sel:o}); };
+    const hMexObj = ()=>{ const o=this.matchObj(find("A",0),"Group A · Matchday 1 · Opening match"); o.note="Julián Quiñones scored the first goal of the 2026 World Cup at Estadio Azteca — the first CONCACAF player to open a World Cup."; this.setState({sel:o}); };
+
+    return {
+      daysPlayed:"2", goalsCount:goals,
+      tabGroups:T==="groups", tabKO:T==="ko", tabResults:T==="results",
+      tabGroupsStyle:T==="groups"?tabOn:tabOff,
+      tabKOStyle:T==="ko"?tabOn:tabOff,
+      tabResultsStyle:T==="results"?tabOn:tabOff,
+      goGroups:()=>this.setState({tab:"groups"}),
+      goKO:()=>this.setState({tab:"ko"}),
+      goResults:()=>this.setState({tab:"results"}),
+      groupCards,
+      koR32, koR16, koQF, koSF, koFinal, koThird:thirdNode,
+      resultDays,
+      hMessi:hMessiObj, hGer:hGerObj, hCan:hCanObj, hMex:hMexObj,
+      sel:this.state.sel||{}, selOpen:!!this.state.sel,
+      closeModal:()=>this.setState({sel:null}),
+      stop:(e)=>e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>
