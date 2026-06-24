@@ -24,44 +24,45 @@
 </helmet>
 <div style="min-height:100vh;position:relative;background:radial-gradient(1200px 600px at 80% -10%, rgba(255,45,85,.16), transparent 60%), radial-gradient(900px 500px at 0% 0%, rgba(61,123,255,.12), transparent 55%), #0B0F1E;">
 
-  <!-- ICONIC PLAYERS MONTAGE — reference image background -->
-  <div style="position:absolute;top:0;left:0;right:0;height:440px;overflow:hidden;background:#0C1122;">
-    <img src="assets/players-bg.png" alt="Iconic players" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%;" />
-    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, rgba(11,15,30,.35) 0%, rgba(11,15,30,.35) 38%, rgba(11,15,30,.72) 68%, rgba(11,15,30,.94) 88%, #0B0F1E 100%);"></div>
+  <!-- ICONIC PLAYERS MONTAGE — reference image background; aspect-ratio keeps the
+       whole image visible (no vertical cropping) at any viewport width -->
+  <div style="position:relative;overflow:hidden;background:#0C1122;min-height:53.35vw;display:flex;flex-direction:column;justify-content:flex-end;">
+    <img src="assets/players-bg.png" alt="Iconic players" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, rgba(11,15,30,.2) 0%, rgba(11,15,30,.35) 38%, rgba(11,15,30,.72) 68%, rgba(11,15,30,.94) 88%, #0B0F1E 100%);"></div>
     <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg, rgba(11,15,30,.5) 0%, transparent 26%, transparent 74%, rgba(11,15,30,.5) 100%);"></div>
+
+    <header style="position:relative;z-index:3;max-width:1240px;width:100%;margin:0 auto;padding:24px 24px 24px;box-sizing:border-box;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.22em;color:#8B95B8;text-transform:uppercase;">
+            <span style="display:inline-flex;gap:4px;font-size:16px;">🇨🇦 🇲🇽 🇺🇸</span>
+            <span>Canada · Mexico · USA</span>
+          </div>
+          <h1 style="font-family:'Anton',sans-serif;font-size:clamp(38px,7vw,76px);line-height:.92;letter-spacing:.01em;margin-top:10px;text-transform:uppercase;">
+            <span style="color:#EAF0FF;">FIFA World Cup</span>
+            <span style="color:#FF2D55;"> 26</span>
+          </h1>
+          <p style="color:#8B95B8;font-weight:600;margin-top:8px;font-size:15px;">June 11 – July 19, 2026 · 48 teams · 104 matches · Live tracker</p>
+        </div>
+        <div style="display:flex;gap:18px;">
+          <div style="text-align:right;">
+            <div style="font-family:'Anton',sans-serif;font-size:30px;color:#16E0B4;line-height:1;">{{ daysPlayed }}</div>
+            <div style="font-size:11px;color:#8B95B8;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-top:4px;">Matchdays<br>played</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Anton',sans-serif;font-size:30px;color:#FFC93C;line-height:1;">{{ goalsCount }}</div>
+            <div style="font-size:11px;color:#8B95B8;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-top:4px;">Goals<br>scored</div>
+          </div>
+        </div>
+      </div>
+
+      <nav style="display:flex;gap:6px;margin-top:26px;border-bottom:1px solid rgba(255,255,255,.08);pointer-events:auto;">
+        <button onClick="{{ goGroups }}" style="{{ tabGroupsStyle }}">Group Stage</button>
+        <button onClick="{{ goKO }}" style="{{ tabKOStyle }}">Knockout Bracket</button>
+        <button onClick="{{ goResults }}" style="{{ tabResultsStyle }}">Results &amp; Highlights</button>
+      </nav>
+    </header>
   </div>
-
-  <header style="max-width:1240px;margin:0 auto;padding:34px 24px 0;position:relative;z-index:3;">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;">
-      <div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.22em;color:#8B95B8;text-transform:uppercase;">
-          <span style="display:inline-flex;gap:4px;font-size:16px;">🇨🇦 🇲🇽 🇺🇸</span>
-          <span>Canada · Mexico · USA</span>
-        </div>
-        <h1 style="font-family:'Anton',sans-serif;font-size:clamp(38px,7vw,76px);line-height:.92;letter-spacing:.01em;margin-top:10px;text-transform:uppercase;">
-          <span style="color:#EAF0FF;">FIFA World Cup</span>
-          <span style="color:#FF2D55;"> 26</span>
-        </h1>
-        <p style="color:#8B95B8;font-weight:600;margin-top:8px;font-size:15px;">June 11 – July 19, 2026 · 48 teams · 104 matches · Live tracker</p>
-      </div>
-      <div style="display:flex;gap:18px;">
-        <div style="text-align:right;">
-          <div style="font-family:'Anton',sans-serif;font-size:30px;color:#16E0B4;line-height:1;">{{ daysPlayed }}</div>
-          <div style="font-size:11px;color:#8B95B8;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-top:4px;">Matchdays<br>played</div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Anton',sans-serif;font-size:30px;color:#FFC93C;line-height:1;">{{ goalsCount }}</div>
-          <div style="font-size:11px;color:#8B95B8;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-top:4px;">Goals<br>scored</div>
-        </div>
-      </div>
-    </div>
-
-    <nav style="display:flex;gap:6px;margin-top:26px;border-bottom:1px solid rgba(255,255,255,.08);pointer-events:auto;">
-      <button onClick="{{ goGroups }}" style="{{ tabGroupsStyle }}">Group Stage</button>
-      <button onClick="{{ goKO }}" style="{{ tabKOStyle }}">Knockout Bracket</button>
-      <button onClick="{{ goResults }}" style="{{ tabResultsStyle }}">Results &amp; Highlights</button>
-    </nav>
-  </header>
 
   <main style="max-width:1240px;margin:0 auto;padding:28px 24px 80px;position:relative;z-index:2;">
 
