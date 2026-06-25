@@ -38,8 +38,8 @@ window.WC = (function () {
       ["KOR","CZE",2,1,1,"Jun 11","17:00","Guadalajara"],
       ["MEX","KOR",1,0,2,"Jun 18","20:00","Mexico City"],
       ["CZE","RSA",1,1,2,"Jun 18","13:00","Guadalajara"],
-      ["CZE","MEX",null,null,3,"Jun 24","19:00","Monterrey"],
-      ["RSA","KOR",null,null,3,"Jun 24","19:00","Guadalajara"],
+      ["CZE","MEX",0,3,3,"Jun 24","19:00","Monterrey"],
+      ["RSA","KOR",1,0,3,"Jun 24","19:00","Guadalajara"],
     ]},
     B: { teams: ["CAN", "BIH", "QAT", "SUI"], matches: [
       ["CAN","BIH",1,1,1,"Jun 12","19:00","Toronto"],
@@ -54,8 +54,8 @@ window.WC = (function () {
       ["HAI","SCO",0,1,1,"Jun 13","16:00","Atlanta"],
       ["BRA","HAI",3,0,2,"Jun 19","19:00","Miami"],
       ["SCO","MAR",0,1,2,"Jun 19","16:00","Atlanta"],
-      ["SCO","BRA",null,null,3,"Jun 24","18:00","Miami"],
-      ["MAR","HAI",null,null,3,"Jun 24","18:00","Atlanta"],
+      ["SCO","BRA",0,3,3,"Jun 24","18:00","Miami"],
+      ["MAR","HAI",4,2,3,"Jun 24","18:00","Atlanta"],
     ]},
     D: { teams: ["USA", "PAR", "AUS", "TUR"], matches: [
       ["USA","PAR",4,1,1,"Jun 12","22:00","Los Angeles"],
